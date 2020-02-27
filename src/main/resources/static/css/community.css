@@ -22,6 +22,11 @@ body {
     font-weight: normal;
     color: #999999;
 }
-.div8 .div9{
+
+.div8 .div9 {
     margin-top: 15px;
+}
+
+.question-button {
+    color: #999999;
 }

@@ -1,13 +1,14 @@
 package com.mylawyer.community.controller;
 
-import com.mylawyer.community.mapper.QuestionMapper;
-import com.mylawyer.community.mapper.UserMapper;
+import com.mylawyer.community.dto.QuestionDTO;
 import com.mylawyer.community.model.Question;
 import com.mylawyer.community.model.User;
+import com.mylawyer.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,11 +21,21 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class PublishController {
-    @Autowired
-    private QuestionMapper questionMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private QuestionService questionService;
+
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name = "id") Integer id,
+                       Model model) {
+        QuestionDTO question = questionService.getQuestionById(id);
+
+        model.addAttribute("title", question.getTitle());//回显信息
+        model.addAttribute("description", question.getDescription());
+        model.addAttribute("tag", question.getTag());
+        model.addAttribute("id", question.getId());
+        return "publish";
+    }
 
     @GetMapping("/publish")
     public String publish() {
@@ -33,12 +44,13 @@ public class PublishController {
 
     //post表单后返回
     @PostMapping("/publish")
-    public String doPublish(
-            @RequestParam("title") String title,
-            @RequestParam("description") String description,
-            @RequestParam("tag") String tag,
-            HttpServletRequest request,
-            Model model) {
+    public String doPublish(//post的值用value接收
+                            @RequestParam(value = "title", required = false) String title,
+                            @RequestParam(value = "description", required = false) String description,
+                            @RequestParam(value = "tag", required = false) String tag,
+                            @RequestParam(value = "id", required = false) Integer id,
+                            HttpServletRequest request,
+                            Model model) {
 
         model.addAttribute("title", title);
         model.addAttribute("description", description);
@@ -82,9 +94,10 @@ public class PublishController {
         question.setTitle(title);
         question.setTag(tag);
         question.setCreator(user.getId());
-        question.setGmtCreate(System.currentTimeMillis());
-        question.setGmtModified(question.getGmtCreate());
-        questionMapper.create(question);
+        question.setId(id);
+        questionService.CreateOrUpdate(question);
         return "redirect:/";
+        //redirect: 映射url->转到接口
+        //return: 映射html页面
     }
 }

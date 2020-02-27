@@ -4,7 +4,7 @@ import com.mylawyer.community.model.User;
 import lombok.Data;
 
 @Data
-public class QuestionDTO {
+public class QuestionDTO {//questionDTO: question + user
     private Integer id;
     private String title;
     private String description;

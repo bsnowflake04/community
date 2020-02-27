@@ -2,9 +2,9 @@ package com.mylawyer.community.controller;
 
 import com.mylawyer.community.dto.AccessTokenDTO;
 import com.mylawyer.community.dto.GithubUserDTO;
-import com.mylawyer.community.mapper.UserMapper;
 import com.mylawyer.community.model.User;
 import com.mylawyer.community.provider.GithubProvider;
+import com.mylawyer.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
@@ -33,7 +34,7 @@ public class AuthorizeController {
     private String redirectUrl;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
@@ -54,15 +55,13 @@ public class AuthorizeController {
         if (githubUserDTO != null && githubUserDTO.getId() != null) {
             //
             User user = new User();
+            user.setName(githubUserDTO.getName());
+            user.setAvatarUrl(githubUserDTO.getAvatarUrl());
+            user.setAccountId(String.valueOf(githubUserDTO.getId()));
             String token = UUID.randomUUID().toString();//设备唯一标识
             user.setToken(token);
-            user.setName(githubUserDTO.getName());
-            user.setAccountId(String.valueOf(githubUserDTO.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
-            user.setAvatarUrl(githubUserDTO.getAvatarUrl());
 
-            userMapper.insert(user);//插入user表
+            userService.CreateOrUpdate(user);
             response.addCookie(new Cookie("token", token));//登录同时生成cookie
 
             //设置session和cookie
@@ -71,6 +70,15 @@ public class AuthorizeController {
         } else {
             return "redirect:/";//登录失败
         }
+    }
 
+    @GetMapping("/signout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response){//删除cookie和token
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
     }
 }

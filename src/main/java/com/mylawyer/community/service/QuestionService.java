@@ -57,12 +57,13 @@ public class QuestionService {
 
     public PaginationDTO listQuestionsByCreator(Integer creator, Integer page, Integer size) {
         Integer totalCount = questionMapper.countByCreator(creator);
-        Integer totalPage;
+        Integer totalPage;//size=5 0  1-4  5  5+
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
         } else {
             totalPage = totalCount / size + 1;
         }
+        if (totalPage == 0) totalPage = 1;
 
         if (page < 1) {
             page = 1;
@@ -90,6 +91,19 @@ public class QuestionService {
         Question question = questionMapper.getQuestionById(id);
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
+        User user = userMapper.findById(question.getCreator());
+        questionDTO.setUser(user);
         return questionDTO;
+    }
+
+    public void CreateOrUpdate(Question question) {
+        if (question.getId() == null) {//create
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.create(question);
+        } else {
+            question.setGmtModified(System.currentTimeMillis());
+            questionMapper.update(question);
+        }
     }
 }
