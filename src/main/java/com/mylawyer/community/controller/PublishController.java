@@ -48,7 +48,7 @@ public class PublishController {
                             @RequestParam(value = "title", required = false) String title,
                             @RequestParam(value = "description", required = false) String description,
                             @RequestParam(value = "tag", required = false) String tag,
-                            @RequestParam(value = "id", required = false) Integer id,
+                            @RequestParam(value = "id", required = false) Integer id,//编辑问题页面需要
                             HttpServletRequest request,
                             Model model) {
 
