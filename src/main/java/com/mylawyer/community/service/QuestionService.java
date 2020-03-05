@@ -2,6 +2,8 @@ package com.mylawyer.community.service;
 
 import com.mylawyer.community.dto.PaginationDTO;
 import com.mylawyer.community.dto.QuestionDTO;
+import com.mylawyer.community.exception.CustomizeErrorCode;
+import com.mylawyer.community.exception.CustomizeException;
 import com.mylawyer.community.mapper.QuestionMapper;
 import com.mylawyer.community.mapper.UserMapper;
 import com.mylawyer.community.model.Question;
@@ -100,6 +102,11 @@ public class QuestionService {
     public QuestionDTO getQuestionById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
 //        Question question = questionMapper.getQuestionById(id);
+
+        if (question == null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
+
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
         User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -114,7 +121,10 @@ public class QuestionService {
             questionMapper.insert(question);
         } else {//编辑页面
             question.setGmtModified(System.currentTimeMillis());
-            questionMapper.updateByPrimaryKeySelective(question);
+            int updated = questionMapper.updateByPrimaryKeySelective(question);
+            if (updated != 1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
     }
 }
