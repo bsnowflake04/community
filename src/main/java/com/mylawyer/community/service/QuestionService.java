@@ -4,6 +4,7 @@ import com.mylawyer.community.dto.PaginationDTO;
 import com.mylawyer.community.dto.QuestionDTO;
 import com.mylawyer.community.exception.CustomizeErrorCode;
 import com.mylawyer.community.exception.CustomizeException;
+import com.mylawyer.community.mapper.QuestionExtMapper;
 import com.mylawyer.community.mapper.QuestionMapper;
 import com.mylawyer.community.mapper.UserMapper;
 import com.mylawyer.community.model.Question;
@@ -26,6 +27,22 @@ public class QuestionService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
+
+    public void incView(Integer id) {
+        /*Question question = questionMapper.selectByPrimaryKey(id);
+        question.setViewCount(question.getViewCount() + 1);
+        int updated = questionMapper.updateByPrimaryKeySelective(question);*/
+        Question question = new Question();
+        question.setViewCount(1);
+        question.setId(id);
+        questionExtMapper.incView(question);//处理并发
+        /*if (updated != 1){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }*/
+    }
 
     public PaginationDTO listAll(Integer page, Integer size) {
 
