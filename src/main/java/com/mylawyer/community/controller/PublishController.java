@@ -26,7 +26,7 @@ public class PublishController {
     private QuestionService questionService;
 
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable(name = "id") Integer id,
+    public String edit(@PathVariable(name = "id") Long id,
                        Model model) {
         QuestionDTO question = questionService.getQuestionById(id);
 
@@ -48,7 +48,7 @@ public class PublishController {
                             @RequestParam(value = "title", required = false) String title,
                             @RequestParam(value = "description", required = false) String description,
                             @RequestParam(value = "tag", required = false) String tag,
-                            @RequestParam(value = "id", required = false) Integer id,//编辑问题页面需要
+                            @RequestParam(value = "id", required = false) Long id,//编辑问题页面需要
                             HttpServletRequest request,
                             Model model) {
 

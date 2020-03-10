@@ -8,4 +8,6 @@ import com.mylawyer.community.model.Question;
  */
 public interface QuestionExtMapper {
     int incView(Question record);
+    int incComment(Question record);
+
 }

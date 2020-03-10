@@ -31,7 +31,7 @@ public class QuestionService {
     @Autowired
     private QuestionExtMapper questionExtMapper;
 
-    public void incView(Integer id) {
+    public void incView(Long id) {
         /*Question question = questionMapper.selectByPrimaryKey(id);
         question.setViewCount(question.getViewCount() + 1);
         int updated = questionMapper.updateByPrimaryKeySelective(question);*/
@@ -77,7 +77,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO listQuestionsByCreator(Integer creator, Integer page, Integer size) {
+    public PaginationDTO listQuestionsByCreator(Long creator, Integer page, Integer size) {
 
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorEqualTo(creator);
@@ -116,7 +116,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public QuestionDTO getQuestionById(Integer id) {
+    public QuestionDTO getQuestionById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
 //        Question question = questionMapper.getQuestionById(id);
 
