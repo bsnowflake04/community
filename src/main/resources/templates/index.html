@@ -9,7 +9,17 @@
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
 </head>
+<script>
+    window.onload = function () {
+        debugger;
+        var status = window.localStorage.getItem("closable");
+        if (status == "true") {
+            window.close();
+            window.localStorage.removeItem("closable");
 
+        }
+    }
+</script>
 <body>
 <div th:insert="~{navigation.html::nav}"></div>
 <div class="container-fluid main">

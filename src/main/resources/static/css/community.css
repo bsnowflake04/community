@@ -23,10 +23,20 @@ body {
     color: #999999;
 }
 
+.question-button {
+    color: #999999;
+}
+
 .div8 .div9 {
     margin-top: 15px;
 }
 
-.question-button {
-    color: #999999;
+.btn-return {
+    float: right;
+    margin: 14px 0;
 }
+
+.text-return {
+    margin: 8px 0;
+}
+
