@@ -6,37 +6,44 @@ body {
     background-color: white;
     margin: 30px;
 }
-
 .btn-publish {
     float: right;
     margin-bottom: 15px;
 }
-
 .media-object {
     width: 38px;
     height: 38px;
 }
-
 .text-desc {
     font-size: 12px;
     font-weight: normal;
     color: #999999;
 }
-
 .question-button {
     color: #999999;
 }
-
 .div8 .div9 {
     margin-top: 15px;
 }
-
 .btn-return {
     float: right;
     margin: 14px 0;
 }
-
 .text-return {
     margin: 8px 0;
 }
-
+.profile{
+    padding-left: 0px;
+}
+.menu{
+    margin-top: 10px;
+    color: #999999;
+}
+.menu .icon{
+    margin-right: 16px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.menu .icon:hover{
+    color: #ce8483;
+}
