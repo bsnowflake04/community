@@ -1,20 +1,20 @@
 package com.mylawyer.community.controller;
 
 import com.mylawyer.community.dto.CommentDTO;
+import com.mylawyer.community.dto.CommentsDTO;
 import com.mylawyer.community.dto.ResultDTO;
+import com.mylawyer.community.enums.CommentTypeEnum;
 import com.mylawyer.community.exception.CustomizeErrorCode;
-import com.mylawyer.community.mapper.CommentMapper;
 import com.mylawyer.community.model.Comment;
 import com.mylawyer.community.model.User;
 import com.mylawyer.community.service.CommentService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @Author bsnowflake04
@@ -31,8 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 public class CommentController {
 
     @Autowired
-    private CommentMapper commentMapper;
-    @Autowired
     private CommentService commentService;
 
     @ResponseBody
@@ -42,6 +40,9 @@ public class CommentController {
         User user = (User)request.getSession().getAttribute("user");
         if(user == null){
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
+        if (commentDTO == null || StringUtils.isBlank(commentDTO.getContent())) {
+            return ResultDTO.errorOf(CustomizeErrorCode.COMMENT_IS_EMPTY);
         }
 
         Comment comment = new Comment();
@@ -53,5 +54,12 @@ public class CommentController {
         comment.setCommentator(user.getId());
         commentService.insert(comment);
         return ResultDTO.okOf();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
+    public ResultDTO<List<CommentsDTO>> comments(@PathVariable(name = "id") Long id) {
+        List<CommentsDTO> commentsDTOS = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
+        return ResultDTO.okOf(commentsDTOS);
     }
 }

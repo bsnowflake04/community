@@ -4,10 +4,7 @@ import com.mylawyer.community.dto.CommentsDTO;
 import com.mylawyer.community.enums.CommentTypeEnum;
 import com.mylawyer.community.exception.CustomizeErrorCode;
 import com.mylawyer.community.exception.CustomizeException;
-import com.mylawyer.community.mapper.CommentMapper;
-import com.mylawyer.community.mapper.QuestionExtMapper;
-import com.mylawyer.community.mapper.QuestionMapper;
-import com.mylawyer.community.mapper.UserMapper;
+import com.mylawyer.community.mapper.*;
 import com.mylawyer.community.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +26,8 @@ public class CommentService {
 
     @Autowired
     private CommentMapper commentMapper;
+    @Autowired
+    private CommentExtMapper commentExtMapper;
     @Autowired
     private QuestionMapper questionMapper;
     @Autowired
@@ -54,6 +53,8 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             } else {
                 commentMapper.insert(comment);
+                dbComment.setCommentCount(1);
+                commentExtMapper.incComment(dbComment);
             }
         } else {
             //回复问题
@@ -63,7 +64,7 @@ public class CommentService {
             } else {
                 commentMapper.insert(comment);
 
-//              增加评论数
+//                  增加评论数
                 Question question = new Question();
                 question.setCommentCount(1);
                 question.setId(dbQuestion.getId());
@@ -73,11 +74,12 @@ public class CommentService {
 
     }
 
-    public List<CommentsDTO> getCommentsByQuestionId(Long id) {
+    public List<CommentsDTO> listByTargetId(Long id, CommentTypeEnum type) {
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria()
                 .andParentIdEqualTo(id)
-                .andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+                .andTypeEqualTo(type.getType());
+        commentExample.setOrderByClause("gmt_create desc");//按创建时间倒序
         List<Comment> comments = commentMapper.selectByExample(commentExample);
         if (comments.size() == 0) {
             return new ArrayList<>();

@@ -12,6 +12,7 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     SYS_ERROR(2004,"服务端异常"),
     COMMENT_TYPE_ERROR(2005,"评论类型错误"),
     COMMENT_NOT_FOUND(2006,"评论不存在"),
+    COMMENT_IS_EMPTY(2008,"评论为空"),
     ;
 
     private Integer code;

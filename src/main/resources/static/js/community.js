@@ -1,20 +1,37 @@
-function post() {
+/**
+ * 提交评论/二级评论
+ */
+function postComment() {
     var questionId = $("#question_id").val();//jquery取值
     var content = $("#comment_content").val();
-    console.log(questionId);
+    post(questionId, content, 1);
+}
+
+function postSubComment(e) {
+    var id = e.getAttribute("data-id");
+    var content = $("#input-" + id).val();
+    post(id, content, 2);
+}
+
+function post(targetId, content, type) {
+    if (!content) {
+        alert("输入内容不能为空");
+        return;
+    }
     console.log(content);
     $.ajax({    //ajax.post
         type: "POST",
         url: "/comment",
         contentType: "application/json",
         data: JSON.stringify({
-            "parentId": questionId,
+            "parentId": targetId,
             "content": content,
-            "type": 1
+            "type": type
         }),
         success: function (response) {
             if (response.code == 200) {
-                $("#return_section").hide();
+                //$("#return_section").hide();
+                window.location.reload();
             } else if (response.code == 2003) {
                 var isAccepted = confirm(response.message);//弹窗返回值
                 if (isAccepted) {
@@ -23,10 +40,62 @@ function post() {
                     //window.location.reload();
                 }
             } else {
-                alert(response.message());
+                alert(response.message);
             }
             console.log(response);
         },
         dataType: "json"
     });
 }
+
+/**
+ * 展开二级评论
+ */
+function collapseComment(e) {
+    var id = e.getAttribute("data-id");
+    var subComment = $("#comment-" + id);
+    subComment.toggleClass("in");
+    e.classList.toggle("active-icon");
+
+    var subbComment = $("#comment-" + id);
+    if (subComment.hasClass("in")/*&&subCommentContainer.children().length != 1*/) {
+        $.getJSON("/comment/" + id, function (data) {
+            $.each(data.data.reverse(), function (index, comment) {
+                console.log(data.data);
+                var mediaLeftElement = $("<div/>", {
+                    "class": "media-left"
+                }).append($("<img/>", {
+                    "class": "media-object img-rounded",
+                    "src": comment.user.avatarUrl
+                }));
+
+                var mediaBodyElement = $("<div/>", {
+                    "class": "media-body"
+                }).append($("<h5/>", {
+                    "class": "media-heading",
+                    "html": comment.user.name
+                })).append($("<div/>", {
+                    "html": comment.content
+                })).append($("<div/>", {
+                    "class": "menu"
+                }).append($("<span/>", {
+                    "class": "pull-right",
+                    "html": moment(comment.gmtCreate).format('YYYY-MM-DD  h:mm:ss')
+                })));
+
+                var mediaElement = $("<div/>", {
+                    "class": "media"
+                }).append(mediaLeftElement).append(mediaBodyElement);
+
+                var commentElement = $("<div/>", {
+                    "class": "col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                }).append(mediaElement).append($("<hr/>",{
+                    "class": "col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                }));
+
+                subbComment.prepend(commentElement);
+            });
+        })
+    }
+}
+

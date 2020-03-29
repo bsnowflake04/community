@@ -64,7 +64,9 @@ public class QuestionService {
         paginationDTO.setPaginationDTO(totalPage, page);
         Integer offset = size * (page - 1);
 //        List<Question> questions = questionMapper.list(offset, size);
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(),new RowBounds(offset, size));
+        QuestionExample example = new QuestionExample();
+        example.setOrderByClause("gmt_create desc");
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example,new RowBounds(offset, size));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questions) {
             User user = userMapper.selectByPrimaryKey(question.getCreator());//通过question.creator找user.avatarurl
@@ -102,6 +104,7 @@ public class QuestionService {
         Integer offset = size * (page - 1);
         QuestionExample example = new QuestionExample();
         example.createCriteria().andCreatorEqualTo(creator);
+        example.setOrderByClause("gmt_create desc");
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
 //        List<Question> questions = questionMapper.listQuestionByCreator(creator, offset, size);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
@@ -135,6 +138,9 @@ public class QuestionService {
         if (question.getId() == null) {//发布页面
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setCommentCount(0);
+            question.setViewCount(0);
+            question.setLikeCount(0);
             questionMapper.insert(question);
         } else {//编辑页面
             question.setGmtModified(System.currentTimeMillis());

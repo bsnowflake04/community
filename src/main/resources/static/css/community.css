@@ -32,12 +32,12 @@ body {
 .text-return {
     margin: 8px 0;
 }
-.profile{
-    padding-left: 0px;
-}
 .menu{
     margin-top: 10px;
     color: #999999;
+}
+.menu .active-icon{
+    color: #ce8483;
 }
 .menu .icon{
     margin-right: 16px;
@@ -46,4 +46,14 @@ body {
 }
 .menu .icon:hover{
     color: #ce8483;
+}
+.sub-comments{
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #eeeeee;
+    padding-top: 15px;
+    border-radius: 5px;
+}
+.comment-count{
+    font-size: 16px;
 }
