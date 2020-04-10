@@ -89,7 +89,7 @@ function collapseComment(e) {
 
                 var commentElement = $("<div/>", {
                     "class": "col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                }).append(mediaElement).append($("<hr/>",{
+                }).append(mediaElement).append($("<hr/>", {
                     "class": "col-lg-12 col-md-12 col-sm-12 col-xs-12"
                 }));
 
@@ -99,3 +99,22 @@ function collapseComment(e) {
     }
 }
 
+function selectTags(e) {
+    var value = e.getAttribute("data-tag");
+    var previous = $("#tag").val();
+    var previouses = previous.split('；');
+    if (previouses.indexOf(value) != -1) {
+
+    } else {
+        if (previous) {
+            $("#tag").val(previous + '；' + value);
+        } else {
+            $("#tag").val(value);
+        }
+    }
+}
+
+function showSelectTags() {
+    $("#select-tags").show();
+
+}

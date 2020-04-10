@@ -1,9 +1,11 @@
 package com.mylawyer.community.controller;
 
+import com.mylawyer.community.cache.TagCache;
 import com.mylawyer.community.dto.QuestionDTO;
 import com.mylawyer.community.model.Question;
 import com.mylawyer.community.model.User;
 import com.mylawyer.community.service.QuestionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,7 @@ public class PublishController {
     @Autowired
     private QuestionService questionService;
 
+    //修改问题
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable(name = "id") Long id,
                        Model model) {
@@ -34,15 +37,18 @@ public class PublishController {
         model.addAttribute("description", question.getDescription());
         model.addAttribute("tag", question.getTag());
         model.addAttribute("id", question.getId());
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
+    //初始创建问题
     @GetMapping("/publish")
-    public String publish() {
+    public String publish(Model model) {
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
-    //post表单后返回
+    //post表单后返回错误信息
     @PostMapping("/publish")
     public String doPublish(//post的值用value接收
                             @RequestParam(value = "title", required = false) String title,
@@ -55,6 +61,7 @@ public class PublishController {
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
+        model.addAttribute("tags", TagCache.get());
 
         if (title == null || title == "") {
             model.addAttribute("error", "标题为空");
@@ -66,6 +73,11 @@ public class PublishController {
         }
         if (tag == null || tag == "") {
             model.addAttribute("error", "标签为空");
+            return "publish";
+        }
+        String inValid = TagCache.filterInValid(tag);
+        if (StringUtils.isNotBlank(inValid)) {
+            model.addAttribute("error", "输入非法标签：" + inValid);
             return "publish";
         }
 

@@ -2,58 +2,107 @@ body {
     background-color: #efefef;
 }
 
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #ce8483;
+}
+
 .main {
     background-color: white;
     margin: 30px;
 }
+
 .btn-publish {
     float: right;
     margin-bottom: 15px;
 }
+
 .media-object {
     width: 38px;
     height: 38px;
 }
+
 .text-desc {
     font-size: 12px;
     font-weight: normal;
     color: #999999;
 }
+
 .question-button {
     color: #999999;
 }
+
+.question-button:hover {
+    color: #ce8483;
+}
+
 .div8 .div9 {
     margin-top: 15px;
 }
+
 .btn-return {
     float: right;
     margin: 14px 0;
 }
+
 .text-return {
     margin: 8px 0;
 }
-.menu{
+
+.menu {
     margin-top: 10px;
     color: #999999;
 }
-.menu .active-icon{
+
+.menu .active-icon {
     color: #ce8483;
 }
-.menu .icon{
+
+.menu .icon {
     margin-right: 16px;
     font-size: 15px;
     cursor: pointer;
 }
-.menu .icon:hover{
+
+.menu .icon:hover {
     color: #ce8483;
 }
-.sub-comments{
+
+.sub-comments {
     margin-top: 10px;
     margin-bottom: 15px;
     border: 1px solid #eeeeee;
     padding-top: 15px;
     border-radius: 5px;
 }
-.comment-count{
+
+.comment-count {
     font-size: 16px;
+}
+
+.publish-tags {
+    display: none;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+.publish-tags .tab-pane{
+    padding-top: 10px;
+}
+.publish-tags .label-primary {
+    margin: 10px 10px;
+    cursor: pointer;
+    white-space: normal;
+    display: inline-block;
+}
+
+.question-related {
+    line-height: 35px;
+    font-size: 14px;
+    padding-left: 0px;
+    margin-left: 0px;
+    list-style: none;
 }
