@@ -3,6 +3,7 @@ package com.mylawyer.community.controller;
 import com.mylawyer.community.dto.PaginationDTO;
 import com.mylawyer.community.mapper.UserMapper;
 import com.mylawyer.community.model.User;
+import com.mylawyer.community.service.NotificationService;
 import com.mylawyer.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ public class ProfileController {
     private UserMapper userMapper;
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private NotificationService notificationService;
 
     @GetMapping("/profile/{action}")
     public String profile(HttpServletRequest request,
@@ -50,12 +53,16 @@ public class ProfileController {
         if ("myquestions".equals(action) || "".equals(action)) {
             model.addAttribute("sectionName", "我的提问");
             model.addAttribute("section", "myquestions");
-
             PaginationDTO paginationDTO = questionService.listQuestionsByCreator(user.getId(), page, size);
             model.addAttribute("paginationDTO", paginationDTO);
         } else if ("replies".equals(action)) {
             model.addAttribute("sectionName", "最新回复");
             model.addAttribute("section", "replies");
+            PaginationDTO paginationDTO = notificationService.list(user.getId(), page, size);
+            model.addAttribute("paginationDTO", paginationDTO);
+
+
+
         }
 
         return "profile";

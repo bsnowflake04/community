@@ -12,7 +12,11 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     SYS_ERROR(2004,"服务端异常"),
     COMMENT_TYPE_ERROR(2005,"评论类型错误"),
     COMMENT_NOT_FOUND(2006,"评论不存在"),
-    COMMENT_IS_EMPTY(2008,"评论为空"),
+    COMMENT_IS_EMPTY(2007,"评论为空"),
+    READ_NOTIFICATION_FAIL(2008,"通知人不匹配"),
+    NOTIFICATION_NOT_FOUND(2009,"通知不存在"),
+    USER_OR_QUESTION_NOT_EXIST(2010,"用户不存在"),
+    OPERATION_FAILED(2011,"操作失败"),
     ;
 
     private Integer code;

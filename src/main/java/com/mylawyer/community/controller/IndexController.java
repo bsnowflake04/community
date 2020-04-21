@@ -1,5 +1,6 @@
 package com.mylawyer.community.controller;
 
+import com.mylawyer.community.cache.TagCache;
 import com.mylawyer.community.dto.PaginationDTO;
 import com.mylawyer.community.mapper.UserMapper;
 import com.mylawyer.community.service.QuestionService;
@@ -46,6 +47,7 @@ public class IndexController {
         }*/
 
         PaginationDTO paginationDTO = questionService.listAll(page, size);
+        model.addAttribute("fiveTags",TagCache.getFive());
         model.addAttribute("paginationDTO", paginationDTO);
         return "index";
     }

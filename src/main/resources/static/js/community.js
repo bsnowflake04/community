@@ -1,6 +1,40 @@
 /**
  * 提交评论/二级评论
  */
+function deleteUser(e){
+    var userId = e.getAttribute("data-id");
+    operate(userId, "deleteUser");
+}
+function alterUser(e) {
+    var userId = e.getAttribute("data-id");
+    operate(userId, "alterUser");
+}
+function deleteQuestion(e) {
+    var questionId = e.getAttribute("data-id");
+    operate(questionId, "deleteQuestion");
+}
+function operate(id,operation) {
+    $.ajax({    //ajax.post
+        type: "POST",
+        url: "/admin/"+operation,
+        contentType: "application/json",
+        data: JSON.stringify({
+            "id": id,
+            "operation": operation,
+        }),
+        success: function (response) {
+            if (response.code == 200) {
+                //$("#return_section").hide();
+                window.location.reload();
+            } else {
+                alert(response.message);
+            }
+        },
+        dataType: "json"
+    });
+}
+
+
 function postComment() {
     var questionId = $("#question_id").val();//jquery取值
     var content = $("#comment_content").val();

@@ -89,9 +89,11 @@ a:hover {
     margin-top: 10px;
     padding-top: 10px;
 }
-.publish-tags .tab-pane{
+
+.publish-tags .tab-pane {
     padding-top: 10px;
 }
+
 .publish-tags .label-primary {
     margin: 10px 10px;
     cursor: pointer;
@@ -105,4 +107,69 @@ a:hover {
     padding-left: 0px;
     margin-left: 0px;
     list-style: none;
+}
+
+.profile-replies-unread {
+    background-color: #efefef59;
+    padding: 25px 0;
+    cursor: pointer;
+}
+
+.admin-user {
+    width: 25%;
+    margin-right: 0;
+    float: left;
+}
+
+.admin-user-btn-group {
+    margin-top: 20px;
+}
+
+.admin-user-div {
+    float: right;
+    padding-bottom: 30px;
+}
+
+.admin-question {
+    width: 70%;
+    float: left;
+}
+
+.admin-question-btn-group {
+    margin-top: 20px;
+}
+
+.admin-question-div {
+    padding-bottom: 30px;
+}
+
+
+.pc_imgBox {
+    display: block;
+    height: 400px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.m_imgBox {
+    display: block;
+    width: 100%;
+}
+
+.carousel-indicators {
+    background: #ccc;
+}
+
+.index-picture-machine {
+    padding: 0 0;
+}
+
+.index-pmindicator-bgcolor {
+    background-color: #ccc0;
+
+}
+#live2dcanvas {
+    border: 0 !important;
 }

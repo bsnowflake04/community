@@ -28,13 +28,22 @@
                            placeholder="问题标题……">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="question-editor">
                     <label for="title">问题补充 (必填，请参照右侧提示):</label>
-                    <textarea name="description" id="description" th:text="${description}" class="form-control"
+                    <textarea name="description" id="description" th:text="${description}"
+                              class="form-control"
                               cols="30"
                               rows="10"></textarea>
                 </div>
-
+                <!--<script type="text/javascript">
+                    $(function () {
+                        var editor = editormd("question-editor", {
+                            width  : "100%",
+                            height : 350,
+                            path: "/js/lib/"
+                        });
+                    });
+                </script>-->
                 <div class="form-group">
                     <label for="tag">添加标签:</label>
                     <input type="text" class="form-control" th:value="${tag}" id="tag" name="tag"
@@ -56,7 +65,8 @@
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div role="tabpanel" th:id="${tagDTO.categoryName}"
-                                 th:each="tagDTO,tagDTOstat:${tags}" th:class="${tagDTOstat.first?'active tab-pane':'tab-pane'}">
+                                 th:each="tagDTO,tagDTOstat:${tags}"
+                                 th:class="${tagDTOstat.first?'active tab-pane':'tab-pane'}">
                                 <span class="label label-primary" th:each="tagg:${tagDTO.tags}">
                                     <span class="glyphicon glyphicon-tags"
                                           onclick="selectTags(this)" th:text="${' ' + tagg}"

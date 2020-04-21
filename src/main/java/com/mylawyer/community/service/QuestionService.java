@@ -49,7 +49,7 @@ public class QuestionService {
 
     public PaginationDTO listAll(Integer page, Integer size) {
 
-        Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());
+        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
         Integer totalPage;
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
@@ -69,7 +69,7 @@ public class QuestionService {
 //        List<Question> questions = questionMapper.list(offset, size);
         QuestionExample example = new QuestionExample();
         example.setOrderByClause("gmt_create desc");
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example,new RowBounds(offset, size));
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questions) {
             User user = userMapper.selectByPrimaryKey(question.getCreator());//通过question.creator找user.avatarurl
@@ -78,7 +78,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        paginationDTO.setQuestions(questionDTOList);
+        paginationDTO.setData(questionDTOList);
         return paginationDTO;
     }
 
@@ -86,7 +86,7 @@ public class QuestionService {
 
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorEqualTo(creator);
-        Integer totalCount = (int)questionMapper.countByExample(questionExample);
+        Integer totalCount = (int) questionMapper.countByExample(questionExample);
 //        Integer totalCount = questionMapper.countByCreator(questionExample);
         Integer totalPage;//size=5 0  1-4  5  5+
         if (totalCount % size == 0) {
@@ -118,7 +118,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        paginationDTO.setQuestions(questionDTOList);
+        paginationDTO.setData(questionDTOList);
         return paginationDTO;
     }
 
@@ -126,7 +126,7 @@ public class QuestionService {
         Question question = questionMapper.selectByPrimaryKey(id);
 //        Question question = questionMapper.getQuestionById(id);
 
-        if (question == null){
+        if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
 
@@ -148,7 +148,7 @@ public class QuestionService {
         } else {//编辑页面
             question.setGmtModified(System.currentTimeMillis());
             int updated = questionMapper.updateByPrimaryKeySelective(question);
-            if (updated != 1){
+            if (updated != 1) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
@@ -167,9 +167,13 @@ public class QuestionService {
 
         List<QuestionDTO> relatedQuestionDTOs = relatedQuestions.stream().map(q -> {
             QuestionDTO questionDTO1 = new QuestionDTO();
-            BeanUtils.copyProperties(q,questionDTO1);
+            BeanUtils.copyProperties(q, questionDTO1);
             return questionDTO1;
         }).collect(Collectors.toList());
         return relatedQuestionDTOs;
+    }
+
+    public void deleteQuestion(Long id) {
+        questionMapper.deleteByPrimaryKey(id);
     }
 }

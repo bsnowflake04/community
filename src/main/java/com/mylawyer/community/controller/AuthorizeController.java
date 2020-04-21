@@ -47,7 +47,6 @@ public class AuthorizeController {
         accessTokenDTO.setCode(code);
         accessTokenDTO.setRedirect_url(redirectUrl);
         accessTokenDTO.setState(state);
-
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         if (accessToken == null) return "redirect:/";//登录失败
 

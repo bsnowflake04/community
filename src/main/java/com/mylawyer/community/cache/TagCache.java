@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -75,6 +76,16 @@ public class TagCache {
         return tagDTOS;
     }
 
+    public static TagDTO getFive(){
+        TagDTO tagDTO = new TagDTO();
+        List<TagDTO> tagDTOS = TagCache.get();
+        ArrayList<String> arr = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            arr.add(tagDTOS.get((int)(1+Math.random()*8)).getTags().get((new Random().nextInt(6)+1)));
+        }
+        tagDTO.setTags(arr);
+        return tagDTO;
+    }
     public static String filterInValid(String tags) {
         String[] split = StringUtils.split(tags, '；');
         List<TagDTO> tagDTOS = get();
