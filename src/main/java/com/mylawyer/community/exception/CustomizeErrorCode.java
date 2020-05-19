@@ -17,6 +17,9 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     NOTIFICATION_NOT_FOUND(2009,"通知不存在"),
     USER_OR_QUESTION_NOT_EXIST(2010,"用户不存在"),
     OPERATION_FAILED(2011,"操作失败"),
+    UPLOADING_FAILED_CAUSE_NAME(2012,"上传失败：文件名错误"),
+    UPLOADING_FAILED(2013,"文件上传失败"),
+
     ;
 
     private Integer code;

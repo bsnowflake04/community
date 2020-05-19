@@ -91,8 +91,8 @@ function collapseComment(e) {
     subComment.toggleClass("in");
     e.classList.toggle("active-icon");
 
-    var subbComment = $("#comment-" + id);
-    if (subComment.hasClass("in")/*&&subCommentContainer.children().length != 1*/) {
+    if (subComment.hasClass("in")&&(subComment.children().length === 1)) {
+
         $.getJSON("/comment/" + id, function (data) {
             $.each(data.data.reverse(), function (index, comment) {
                 console.log(data.data);
@@ -127,7 +127,7 @@ function collapseComment(e) {
                     "class": "col-lg-12 col-md-12 col-sm-12 col-xs-12"
                 }));
 
-                subbComment.prepend(commentElement);
+                subComment.prepend(commentElement);
             });
         })
     }
